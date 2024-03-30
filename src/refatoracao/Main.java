@@ -6,27 +6,61 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        int j, n, a1, an, r, t, s;
-        PrintStream w = System.out;
-        Scanner sc = new Scanner(System.in);
-        do {
-            w.println("Digite o número de termos da PA:");
-            n = sc.nextInt();
-        } while (n<2);
-        do{
-            w.println("Digite o primeiro termo da PA:");
-            a1 = sc.nextInt();
-        } while (a1<1);
-        do {            
-            w.println("Digite a razão da PA:");
-            r = sc.nextInt();
-        } while (r<1);
-        an=a1+(n-1)*r;
-        s=((a1+an)*n)/2;
-        for(j=1;j<=n;j++){
-            t=a1+(j-1)*r;
-            w.printf("a%d=%d\n", j, t);
+        PrintStream writer = System.out;
+        Scanner scanner = new Scanner(System.in);
+        int numTermos;
+        int primeiroTermo;
+        int razao;
+
+        numTermos = leNmrTermos(scanner, writer);
+        primeiroTermo = lePrimeiroTermo(scanner, writer);
+        razao = leRazaoPA(scanner, writer);
+        imprimeTermos(writer, primeiroTermo, numTermos, razao);
+        retornaSoma(writer, primeiroTermo, numTermos, razao);
+
+        writer.close();
+        scanner.close();
+    }
+
+    public static void imprimeTermos(PrintStream writer, int primeiroTermo, int numTermos, int razao) {
+        int posicao;
+        int termo;
+        for (posicao = 1; posicao <= numTermos; posicao++) {
+            termo = primeiroTermo + ((posicao - 1) * razao);
+            writer.printf("a%d=%d\n", posicao, termo);
         }
-        w.printf("A soma é: %d\n", s);
+    }
+
+    public static void retornaSoma(PrintStream writer, int primeiroTermo, int numTermos, int razao) {
+        int soma;
+        soma = ((primeiroTermo + (primeiroTermo + (numTermos - 1) * razao)) * numTermos) / 2;
+        writer.printf("A soma é:%d\n", soma);
+    }
+
+    public static int leNmrTermos(Scanner scanner, PrintStream writer) {
+        int num;
+        do {
+            writer.println("Digite o número de termos de PA:");
+            num = scanner.nextInt();
+        } while (num < 2);
+        return num;
+    }
+
+    public static int lePrimeiroTermo(Scanner scanner, PrintStream writer) {
+        int num;
+        do {
+            writer.println("Digite o primeiro termo de PA:");
+            num = scanner.nextInt();
+        } while (num < 1);
+        return num;
+    }
+
+    public static int leRazaoPA(Scanner scanner, PrintStream writer) {
+        int num;
+        do {
+            writer.println("Digite a razão de PA:");
+            num = scanner.nextInt();
+        } while (num < 1);
+        return num;
     }
 }
