@@ -1,66 +1,87 @@
 package refatoracao;
 
-import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
-        PrintStream writer = System.out;
-        Scanner scanner = new Scanner(System.in);
-        int numTermos;
-        int primeiroTermo;
-        int razao;
+	static Scanner console = new Scanner(System.in);
+	
+	//--------------------------------------------------------------------
+	static private int readIntInto(String msg, int min, int max)
+	{
+		int number;
+		do 
+		{
+		   System.out.println(msg);
+		   number = console.nextInt();	   
+		} while(number > max || number < min);
+		
+		return number;
+	}
+	
+	//--------------------------------------------------------------------
+	static public int readNumberOfTerms()
+	{
+		String msg = "Digite o número de termos da PA:";
+		
+		return readIntInto(msg, 2, Integer.MAX_VALUE);
+	}
 
-        numTermos = leNmrTermos(scanner, writer);
-        primeiroTermo = lePrimeiroTermo(scanner, writer);
-        razao = leRazaoPA(scanner, writer);
-        imprimeTermos(writer, primeiroTermo, numTermos, razao);
-        retornaSoma(writer, primeiroTermo, numTermos, razao);
-
-        writer.close();
-        scanner.close();
-    }
-
-    public static void imprimeTermos(PrintStream writer, int primeiroTermo, int numTermos, int razao) {
-        int posicao;
-        int termo;
-        for (posicao = 1; posicao <= numTermos; posicao++) {
-            termo = primeiroTermo + ((posicao - 1) * razao);
-            writer.printf("a%d=%d\n", posicao, termo);
-        }
-    }
-
-    public static void retornaSoma(PrintStream writer, int primeiroTermo, int numTermos, int razao) {
-        int soma;
-        soma = ((primeiroTermo + (primeiroTermo + (numTermos - 1) * razao)) * numTermos) / 2;
-        writer.printf("A soma é:%d\n", soma);
-    }
-
-    public static int leNmrTermos(Scanner scanner, PrintStream writer) {
-        int num;
-        do {
-            writer.println("Digite o número de termos de PA:");
-            num = scanner.nextInt();
-        } while (num < 2);
-        return num;
-    }
-
-    public static int lePrimeiroTermo(Scanner scanner, PrintStream writer) {
-        int num;
-        do {
-            writer.println("Digite o primeiro termo de PA:");
-            num = scanner.nextInt();
-        } while (num < 1);
-        return num;
-    }
-
-    public static int leRazaoPA(Scanner scanner, PrintStream writer) {
-        int num;
-        do {
-            writer.println("Digite a razão de PA:");
-            num = scanner.nextInt();
-        } while (num < 1);
-        return num;
-    }
+	//--------------------------------------------------------------------
+	static public int readFirstTerm()
+	{
+		String msg = "Digite o primeiro termo da PA:";
+		
+		return readIntInto(msg, 1, Integer.MAX_VALUE);
+	}
+	
+	//--------------------------------------------------------------------
+	static public int readCommonDifference()
+	{
+		String msg = "Digite a razão da PA:";
+		
+		return readIntInto(msg, 1, Integer.MAX_VALUE);
+	}
+	
+	//--------------------------------------------------------------------
+	static public int termOfIndex(int firstTerm, int commonDifference, int index)
+	{
+		return firstTerm + (index-1) * commonDifference;
+	}
+	
+	//--------------------------------------------------------------------
+	static public int sumOfAllTerms(int firstTerm, int commonDifference, int numberOfTerms)
+	{
+		int lastTerm = termOfIndex(firstTerm, commonDifference, numberOfTerms);
+		
+		return ( ((firstTerm + lastTerm) * numberOfTerms) / 2);
+	}
+	
+	//--------------------------------------------------------------------
+	static public void printAllTerms(int firstTerm, int commonDifference, int numberOfTerms)
+	{
+		for(int i=1; i<=numberOfTerms; i++)
+		{
+			int ithTerm = termOfIndex(firstTerm, commonDifference, i);
+			
+			System.out.printf("a%d=%d\n",i, ithTerm);
+		}
+	}
+	
+	//--------------------------------------------------------------------
+	static public void main(String[] args)
+	{
+		int firstTerm, reason, numberOfTerms;
+		
+		firstTerm = readFirstTerm();
+		reason = readCommonDifference();
+		numberOfTerms = readNumberOfTerms();
+		
+		printAllTerms(firstTerm, reason, numberOfTerms);
+		
+		int sum = sumOfAllTerms(firstTerm, reason, numberOfTerms);
+		System.out.println("A soma é: " + sum);
+		
+		console.close();
+	}
 }
